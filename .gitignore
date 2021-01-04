@@ -33,3 +33,5 @@ build/
 .vscode/
 
 rabbitMQSchemaTopic.png
+retryMechanismForDirectExchange.png
+retryMechanismForFanoutExchange.png

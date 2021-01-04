@@ -2,9 +2,7 @@ package com.u4.rabbitmq.producer;
 
 import com.u4.rabbitmq.producer.entity.Employee;
 import com.u4.rabbitmq.producer.entity.Picture;
-import com.u4.rabbitmq.producer.generator.HumanResourceProducer;
-import com.u4.rabbitmq.producer.generator.PictureProducer;
-import com.u4.rabbitmq.producer.generator.PictureProducerTwo;
+import com.u4.rabbitmq.producer.generator.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,8 +29,17 @@ public class ProducerApplication implements CommandLineRunner {
 //	@Autowired
 //	private PictureProducer pictureProducer;
 
+//	@Autowired
+//	private PictureProducerTwo pictureProducerTwo;
+
+//	@Autowired
+//	private MyPictureProducer myPictureProducer;
+
+//	@Autowired
+//	private RetryPictureProducer retryPictureProducer;
+
 	@Autowired
-	private PictureProducerTwo pictureProducerTwo;
+	private RetryEmployeeProducer retryEmployeeProducer;
 
 	private final List<String> SOURCES = List.of("mobile", "web");
 	private final List<String> TYPES = List.of("jpg", "png", "svg");
@@ -46,16 +53,21 @@ public class ProducerApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// helloRabbitProducer.sendHello("Nanda Gopal " + Math.random());
 		for (int i = 0; i < 10; i++) {
-			// var e = new Employee("emp " + i, "Employee " + i, LocalDate.now());
+			 // var e = new Employee("emp " + i, "Employee " + i, LocalDate.now());
+			var e = new Employee("emp " + i, null, LocalDate.now());
 			// employeeJsonProducer.sendMessage(e);
 			// humanResourceProducer.sendMessage(e);
-			var p = new Picture();
-			p.setName("Picture " + i);
-			p.setSize(ThreadLocalRandom.current().nextLong(1, 10001));
-			p.setSource(SOURCES.get(i % SOURCES.size()));
-			p.setType(TYPES.get(i % TYPES.size()));
+			retryEmployeeProducer.sendMessage(e);
+			// var p = new Picture();
+			// p.setName("Picture " + i);
+			// p.setSize(ThreadLocalRandom.current().nextLong(1, 10001));
+			// p.setSize(ThreadLocalRandom.current().nextLong(9001, 10001));
+			// p.setSource(SOURCES.get(i % SOURCES.size()));
+			// p.setType(TYPES.get(i % TYPES.size()));
 			// pictureProducer.sendMessage(p);
-			pictureProducerTwo.sendMessage(p);
+			// pictureProducerTwo.sendMessage(p);
+			// myPictureProducer.sendMessage(p);
+			// retryPictureProducer.sendMessage(p);
 		}
 	}
 }
