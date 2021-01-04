@@ -1,24 +1,24 @@
-package com.u4.rabbitmq.producer;
+package com.u4.rabbitmq.producer.generator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.u4.rabbitmq.producer.entity.Employee;
+import com.u4.rabbitmq.producer.entity.Picture;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 //@Service
-public class EmployeeJsonProducer {
+public class PictureProducer {
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    RabbitTemplate rabbitTemplate;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public void sendMessage(Employee emp) {
+    public void sendMessage(Picture p) {
         try {
-            var json = objectMapper.writeValueAsString(emp);
-            rabbitTemplate.convertAndSend("course.employee", json);
+            var json = objectMapper.writeValueAsString(p);
+            rabbitTemplate.convertAndSend("x.picture", p.getType(), json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

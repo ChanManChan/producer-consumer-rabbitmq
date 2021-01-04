@@ -1,7 +1,7 @@
-package com.u4.rabbitmq.consumer;
+package com.u4.rabbitmq.consumer.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.u4.rabbitmq.consumer.entity.Employee;
+import com.u4.rabbitmq.consumer.entity.Picture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -9,18 +9,17 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+
 //@Service
-public class AccountingConsumer {
+public class PictureVectorConsumer {
     private ObjectMapper objectMapper = new ObjectMapper();
+    private static final Logger log = LoggerFactory.getLogger(PictureVectorConsumer.class);
 
-    private static final Logger log = LoggerFactory.getLogger(EmployeeJsonConsumer.class);
-
-    @RabbitListener(queues = "q.hr.accounting")
+    @RabbitListener(queues = "q.picture.vector")
     public void listen(String message) {
-        Employee emp = null;
         try {
-            emp = objectMapper.readValue(message, Employee.class);
-            log.info("On accounting, employee is {}", emp);
+            var p = objectMapper.readValue(message, Picture.class);
+            log.info("On vector: {}", p.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
